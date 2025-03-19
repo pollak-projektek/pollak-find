@@ -10,6 +10,10 @@
   --transition: all 0.3s ease;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: var(--font-family);
   color: var(--text-color);
@@ -27,19 +31,6 @@ body {
 }
 
 /* QR Code Container */
-#qrcode-container {
-  display: flex;
-  margin: 0 auto;
-  width: fit-content;
-
-  padding: 10px;
-  backdrop-filter: var(--blur-effect);
-  -webkit-backdrop-filter: var(--blur-effect);
-}
-
-#qrcode-container.animate {
-  animation: containerBorderPulse 2s alternate;
-}
 
 #qr-content {
   display: flex;
@@ -47,16 +38,30 @@ body {
   align-items: center;
 }
 
+/* QR-kód konténer fix méretének biztosítása */
+#qrcode-container {
+  display: flex;
+  margin: 0 auto;
+  width: fit-content;
+  height: 176px;
+  padding: 10px;
+  background: none;
+  justify-content: center;
+  align-items: center;
+  box-sizing: content-box; /* Visszaállítás */
+}
+
 #qrcode {
   display: none;
   margin: 0 auto;
-  width: 100%;
-  height: 100%;
+  width: 156px;
+  height: 156px;
   justify-content: center;
   align-items: center;
   background: rgb(255, 255, 255);
-  border-radius: 12px;
+  border-radius: 12.5px;
   padding: 10px;
+  box-sizing: content-box; /* Visszaállítás */
 }
 
 /* Messages */
@@ -76,6 +81,11 @@ body {
   color: #ccc;
   margin-top: -2.5px;
   margin-bottom: 5px;
+  text-align: center;
+  height: 25px; /* Üzenet ugyanolyan magasságú, mint a QR-kód */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tuto-message-center,
@@ -125,7 +135,7 @@ body {
   color: #e6f3ff;
   cursor: pointer;
   transition: var(--transition);
-  border-radius: 10px;
+  border-radius: 16.5px;
   box-shadow: var(--box-shadow);
   backdrop-filter: var(--blur-effect);
   -webkit-backdrop-filter: var(--blur-effect);
@@ -156,23 +166,33 @@ body {
   opacity: 0.95;
 }
 
+/* Gombok alapstílusa */
 button,
-.reset-button {
+.reset-button,
+.search-button {
   font-family: var(--font-family);
   color: var(--text-color);
   cursor: pointer;
-  border-radius: 5px;
   box-shadow: var(--box-shadow);
   backdrop-filter: var(--blur-effect);
   -webkit-backdrop-filter: var(--blur-effect);
   border: 1px solid;
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  box-sizing: border-box;
 }
 
+/* Tanterem keresése gomb */
 .search-button {
   background: #00451a;
   border-color: #00cf4f;
+  border-radius: 16.5px;
+  flex: 1; /* Takes up available space */
+  margin-right: 10px; /* Space between search and reset buttons */
 }
 
+/* Hover effects remain unchanged */
 .search-button:hover {
   background: #003b17;
   color: #00cf4f;
@@ -181,32 +201,134 @@ button,
 }
 
 button:hover {
-  background: #373d3a;
-  color: #7a7e7b;
+  background: rgba(15, 15, 15, 0.5);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(7.4px);
+  -webkit-backdrop-filter: blur(7.4px);
+  border: 1px solid rgba(45, 45, 45, 0.75);
 }
 
 button {
-  background: #3d3537;
-  border-color: #66595c;
+  background: rgba(25, 25, 25, 0.5);
+  border-radius: 16.5px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(7.4px);
+  -webkit-backdrop-filter: blur(7.4px);
+  border: 1px solid rgba(45, 45, 45, 0.75);
 }
 
+/* Visszaállítás gomb */
 .reset-button {
   background: #45000f;
   border-color: #cf0034;
+  border-radius: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  width: 40px; /* Fixed width for circular shape */
+  height: 40px; /* Fixed height for circular shape */
+  flex-shrink: 0; /* Prevents shrinking */
 }
 
+/* Hover effekt a reset gombra */
 .reset-button:hover {
   background: #3b000f;
   color: #cf0034;
-  text-shadow: #45000f 1px 1px 1px;
   border-color: #58000f;
+}
+
+/* Forgó animáció */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Reset gomb ikon */
+.reset-button i {
+  font-size: 1.2rem;
+  transition: transform 0.5s ease; /* Átmenet az animációhoz */
+}
+
+/* Animáció osztály */
+.reset-button .spin {
+  animation: spin 0.5s ease forwards; /* Egyszeri forgás */
+}
+
+/* Optional section container */
+.optional-section {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+/* Toggle switch label */
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: relative; /* Make this the positioning context */
+}
+
+/* Checkbox (hidden) */
+.toggle-label input[type="checkbox"] {
+  display: none;
+}
+
+/* Toggle text */
+.toggle-text {
+  font-family: var(--font-family);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Toggle switch track */
+.toggle-label .toggle-text::before {
+  content: "";
+  width: 40px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  margin-right: 10px;
+  transition: var(--transition);
+}
+
+/* Toggle switch knob */
+.toggle-label .toggle-text::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--text-color);
+  border-radius: 50%;
+  left: 2px; /* Start position inside the track */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for vertical centering */
+  transition: var(--transition);
+}
+
+/* Checked state */
+.toggle-label input[type="checkbox"]:checked + .toggle-text::before {
+  background: var(--accent-color);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-text::after {
+  left: 22px; /* Move to the right side of the track (40px width - 16px knob - 2px offset) */
 }
 
 /* Grid and Map */
 .grid {
   display: grid;
   grid-template-columns: repeat(20, 3em);
-  gap: 5px;
+  gap: 5px; /* Ez fix marad */
   padding: 10px;
   position: absolute;
   cursor: grab;
@@ -227,12 +349,15 @@ button {
   justify-content: center;
   width: 3em;
   height: 3em;
+  min-width: 3em; /* Biztosítja, hogy ne zsugorodjon */
+  min-height: 3em; /* Biztosítja, hogy ne zsugorodjon */
   align-items: center;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 7.5px;
   font-weight: bold;
   text-align: center;
   color: rgb(25, 25, 25);
+  box-sizing: border-box; /* Explicit módon megadva */
 }
 
 .grid .black {
@@ -240,50 +365,32 @@ button {
   color: transparent;
 }
 
+/* Keyframes */
 .grid .path {
   animation: glow 2s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Keyframes */
 @keyframes glow {
   0% {
     box-shadow: 0 0 5px rgba(0, 132, 165, 0.5);
     background-color: rgba(0, 132, 165, 0.4);
-    border: 1px solid rgba(0, 132, 165, 0.8);
+    outline: 1px solid rgba(0, 132, 165, 0.8); /* Border helyett outline */
     color: white;
     -webkit-box-shadow: 0 0 5px rgba(0, 132, 165, 0.5);
   }
   50% {
     box-shadow: 0 0 15px rgba(0, 132, 165, 1);
     background-color: rgba(0, 132, 165, 0.9);
-    border: 1px solid rgba(0, 132, 165, 1);
+    outline: 1px solid rgba(0, 132, 165, 1); /* Border helyett outline */
     color: white;
     -webkit-box-shadow: 0 0 15px rgba(0, 132, 165, 1);
   }
   100% {
     box-shadow: 0 0 5px rgba(0, 132, 165, 0.5);
     background-color: rgba(0, 132, 165, 0.4);
-    border: 1px solid rgba(0, 132, 165, 0.8);
+    outline: 1px solid rgba(0, 132, 165, 0.8); /* Border helyett outline */
     color: white;
     -webkit-box-shadow: 0 0 5px rgba(0, 132, 165, 0.5);
-  }
-}
-
-@keyframes containerBorderPulse {
-  0% {
-    border-color: var(--border-color);
-  }
-  25% {
-    border-color: var(--secondary-color);
-  }
-  50% {
-    border-color: rgba(57, 57, 57, 0.75);
-  }
-  75% {
-    border-color: rgba(51, 51, 51, 0.75);
-  }
-  100% {
-    border-color: var(--border-color);
   }
 }
 
@@ -294,33 +401,25 @@ button {
 }
 
 .left-panel {
-  display: none;
-}
-
-.left-panel.active {
-  display: flex;
-
+  position: fixed;
+  width: 275px;
+  min-height: calc(100dvh - 10px);
+  max-height: calc(100dvh - 10px);
+  overflow-y: auto;
   padding: 10px;
   flex-direction: column;
   gap: 10px;
-  height: calc(100dvh - 10px);
   background: rgba(25, 25, 25, 0.5);
-  border-radius: 15px;
+  border-radius: 27.5px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-
   backdrop-filter: blur(7.4px);
   -webkit-backdrop-filter: blur(7.4px);
   border: 1px solid rgba(45, 45, 45, 0.75);
   box-sizing: border-box;
-  align-self: center;
-  animation: fadeIn 0.2s;
+  left: -285px; /* Kívülre tolva (275px szélesség + 10px margó) */
+  transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Simább animáció */
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.left-panel.active {
+  left: 10px; /* Beljebb a széltől */
 }

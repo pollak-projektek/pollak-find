@@ -174,17 +174,25 @@
             </datalist>
           </div>
 
+          <label class="searchable-select-label" for="mouse-nav">Opcionális: </label>
+          <div class="optional-section">
+            <label class="toggle-label" for="mouse-nav">
+              <input type="checkbox" id="mouse-nav" name="mouse-nav" />
+              <span class="toggle-text">Egér navigáció (Csak PC)</span>
+            </label>
+          </div>
+
           <div id="action-buttons">
             <button class="search-button" onclick="runPathfinding()">
               Tanterem keresése
             </button>
             <button class="reset-button" onclick="resetGridPosition()">
-              Visszaállítás
+              <i class="fas fa-undo-alt"></i>
             </button>
           </div>
 
           <div id="qrcode-container">
-            <p id="qr-message">Indítsd el a keresést a generáláshoz</p>
+            <p id="qr-message">Indítsd el a kereséset, hogy megjelenítsd a QR-kódot!</p>
             <div id="qrcode"></div>
           </div>
 
@@ -325,8 +333,27 @@
 
       <div id="working-area">
         <div class="current-floor-display">
-          <p id="currentFloor">Földszint</p>
-          <span id="currentFloorText"></span>
+          <div class="dynamic-island">
+            <div class="pill">
+              <span class="floor-text" id="floorText">Földszint</span>
+            </div>
+            <div class="container">
+              <div class="left">
+                <div class="photo">
+                  <img src="images/photo.png" alt="" />
+                </div>
+                <div class="description">
+                  <div class="device" id="currentFloor">Földszint</div>
+                  <div class="name route" id="currentFloorText">...</div>
+                </div>
+              </div>
+              <div class="right">
+                <button class="collapse-button" onclick="toggleDynamicIsland()">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="grid" id="grid"></div>
       </div>

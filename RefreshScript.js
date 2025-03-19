@@ -661,13 +661,9 @@ function generateQRCode(start, end) {
   qrDiv.innerHTML = "";
 
   // QR-kód generálása
-
   const url = window.location.href.split("?")[0];
-
   new QRCode(qrDiv, {
-    text: `${url}?start=${encodeURIComponent(start)}&end=${encodeURIComponent(
-      end
-    )}`,
+    text: `${url}?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`,
     width: 156,
     height: 156,
     colorDark: "#000000",
@@ -681,7 +677,7 @@ function generateQRCode(start, end) {
 
   // Animáció indítása
   qrContainer.classList.remove("animate");
-  void qrContainer.offsetWidth;
+  void qrContainer.offsetWidth; // Trigger reflow
   qrContainer.classList.add("animate");
 }
 
@@ -706,9 +702,8 @@ function buildRoomIndex() {
 document.addEventListener("DOMContentLoaded", function () {
   buildRoomIndex();
   createGrid();
-
   updateFloorDisplay();
-  updateArrowPosition(); // Hozzáadva a kezdeti pozícióhoz
+  updateArrowPosition();
 
   const urlParams = new URLSearchParams(window.location.search);
   const start = urlParams.get("start");
@@ -721,7 +716,21 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     document.getElementById("qr-message").style.display = "block";
   }
+
+  // Sidebar és openbtn inicializálása
+  const localData = localStorage.getItem("sidebar");
+  const sidebar = document.getElementById("sidenav");
+  const openbtn = document.getElementById("openbtn");
+
+  if (localData === "active") {
+    sidebar.classList.add("active");
+    openbtn.style.display = "none"; // Ha a sidebar nyitva van, az openbtn rejtve
+  } else {
+    sidebar.classList.remove("active");
+    openbtn.style.display = "block"; // Ha a sidebar zárva van, az openbtn látható
+  }
 });
+
 
 setupDesktop();
 
@@ -731,6 +740,13 @@ function setupDesktop() {
   const gridElement = document.getElementById("grid");
 
   window.resetGridPosition = function () {
+    // Ikon forgásának elindítása
+    const resetIcon = document.querySelector(".reset-button i");
+    resetIcon.classList.remove("spin"); // Előző animáció eltávolítása
+    void resetIcon.offsetWidth; // Trigger reflow az animáció újraindításához
+    resetIcon.classList.add("spin"); // Animáció indítása
+  
+    // Eredeti visszaállítási logika
     fullPath = [];
     currentPath = [];
     createGrid();
@@ -742,6 +758,16 @@ function setupDesktop() {
     targetFloor = null;
     updateArrowBlink();
     updateFloorDisplay();
+    dynamicIsland.classList.remove("active"); // Active mód kikapcsolása
+    container.classList.remove("active");
+  
+    // Grid pozíció visszaállítása
+    const gridElement = document.getElementById("grid");
+    gridElement.style.left = ""; // Remove inline left style
+    gridElement.style.top = ""; // Remove inline top style
+    gridElement.style.transform = ""; // Reset any transforms from dragging
+    gridMovedManually = false; // Reset manual movement flag
+    centerGrid(true); // Force re-center the grid to its default position
   };
 }
 
@@ -942,6 +968,22 @@ function updateArrowBlink() {
   }
 }
 
+// Dynamic Island összecsukása/kibontása
+function toggleDynamicIsland() {
+  const dynamicIsland = document.querySelector(".dynamic-island");
+  const container = document.querySelector(".dynamic-island .container");
+
+  if (dynamicIsland.classList.contains("active")) {
+    // Összecsukás: eltávolítjuk az active osztályt
+    dynamicIsland.classList.remove("active");
+    container.classList.remove("active");
+  } else {
+    // Kibontás: hozzáadjuk az active osztályt
+    dynamicIsland.classList.add("active");
+    container.classList.add("active");
+  }
+}
+
 // Útvonalkeresés
 let fullPath = []; // Teljes útvonal tárolása
 let currentPath = []; // Aktuális emelet útvonala
@@ -967,7 +1009,6 @@ function runPathfinding() {
   fullPath = multiFloorAStar(startPos, endPos, startName, endName);
 
   if (fullPath.length > 0) {
-    // Az aktuális emelet teljes szakaszát állítjuk be induláskor
     const floorSegmentStart = fullPath.findIndex(
       (n) => n.floor === currentFloor
     );
@@ -985,12 +1026,18 @@ function runPathfinding() {
     updateArrowBlink();
     intervallStart();
 
-    //add text to currentFloorText: A célállomásod a X emeleten található
+    // Dynamic Island active mód bekapcsolása (csak ha még nem active)
+    if (!dynamicIsland.classList.contains("active")) {
+      dynamicIsland.classList.add("active");
+      container.classList.add("active");
+    }
+
+    // Célállomás szöveg frissítése
     let currentFloord = document.getElementById("currentFloorText");
     let text =
       endPos.floor > 0
-        ? `A célállomásod a ${endPos.floor}. emeleten található`
-        : "A célállomásod a földszinten található";
+        ? `A célja a(z) ${endPos.floor}. emeleten található`
+        : "A célja a földszinten található";
     currentFloord.textContent = text;
   } else {
     alert("Nincs útvonal a kiválasztott pontok között!");
@@ -1005,9 +1052,11 @@ function updateFloorDisplay() {
     2: "2. Emelet",
   };
   const currentFloorElement = document.getElementById("currentFloor");
-  if (currentFloorElement) {
-    currentFloorElement.textContent =
-      floorNames[currentFloor] || "Ismeretlen emelet";
+  const floorTextElement = document.getElementById("floorText");
+  if (currentFloorElement && floorTextElement) {
+    const floorName = floorNames[currentFloor] || "Ismeretlen emelet";
+    currentFloorElement.textContent = floorName;
+    floorTextElement.textContent = floorName;
   }
 }
 
@@ -1168,15 +1217,64 @@ if (localData === "active") {
 
 function toggleSidebar() {
   const sidebar = document.getElementById("sidenav");
+  const openbtn = document.getElementById("openbtn");
+
   sidebar.classList.toggle("active");
 
-  //toggle #openbtn based on class
-  const openbtn = document.getElementById("openbtn");
   if (sidebar.classList.contains("active")) {
-    openbtn.style.display = "none";
+    openbtn.style.display = "none"; // Sidebar nyitva -> openbtn rejtve
     localStorage.setItem("sidebar", "active");
   } else {
-    openbtn.style.display = "block";
+    openbtn.style.display = "block"; // Sidebar zárva -> openbtn látható
     localStorage.setItem("sidebar", "inactive");
   }
 }
+
+//Dynamic Island
+const dynamicIslandPill = document.querySelector(".dynamic-island .pill");
+const dynamicIsland = document.querySelector(".dynamic-island");
+const container = document.querySelector(".dynamic-island .container");
+
+// Track mouse navigation state
+let isMouseNavigationEnabled = false;
+
+// Toggle mouse navigation
+document.getElementById("mouse-nav").addEventListener("change", function () {
+  isMouseNavigationEnabled = this.checked;
+  const gridElement = document.getElementById("grid");
+  if (isMouseNavigationEnabled) {
+    gridElement.style.cursor = "pointer"; // Indicate clickable cells
+  } else {
+    gridElement.style.cursor = "grab"; // Revert to draggable cursor
+  }
+});
+
+// Handle mouse clicks on grid cells
+document.getElementById("grid").addEventListener("click", function (event) {
+  if (!isMouseNavigationEnabled) return; // Do nothing if disabled
+
+  const cell = event.target.closest(".cell");
+  if (!cell || cell.classList.contains("black") || !cell.innerHTML) return; // Ignore black cells or empty cells
+
+  const cellValue = cell.innerHTML.replace(/<[^>]+>/g, ""); // Remove HTML (e.g., stair image)
+  if (allowedStairs.includes(cell.innerHTML)) return; // Ignore stairs
+
+  if (event.button === 0) {
+    // Left click: Set start point
+    document.getElementById("start").value = cellValue;
+  }
+});
+
+document.getElementById("grid").addEventListener("contextmenu", function (event) {
+  if (!isMouseNavigationEnabled) return; // Do nothing if disabled
+
+  event.preventDefault(); // Prevent default context menu
+  const cell = event.target.closest(".cell");
+  if (!cell || cell.classList.contains("black") || !cell.innerHTML) return; // Ignore black cells or empty cells
+
+  const cellValue = cell.innerHTML.replace(/<[^>]+>/g, ""); // Remove HTML (e.g., stair image)
+  if (allowedStairs.includes(cell.innerHTML)) return; // Ignore stairs
+
+  // Right click: Set end point
+  document.getElementById("end").value = cellValue;
+});

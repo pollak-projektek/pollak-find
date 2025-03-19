@@ -35,35 +35,31 @@
   z-index: 100;
 }
 .current-floor-display {
-  display: flex;
-
-  align-items: center;
-  flex-direction: column;
-  padding: 10px;
-  z-index: 100;
-  font-size: 1.2rem;
-  height: fit-content;
-  background-color: rgba(53, 52, 52, 0.89);
-  border-radius: 10px;
+  position: relative; /* Ha bent marad a struktúrában */
+  height: 0; /* Csökkentjük a hatását, ha nem használjuk */
 }
-.current-floor-display span {
+.route {
   color: rgb(52, 179, 252);
   font-size: 0.9rem;
-  font-style: italic;
+  font-family: "Poppins", sans-serif;
 }
 .current-floor-display p {
   margin: 0;
   color: white;
+  font-family: "Poppins", sans-serif;
 }
 
 #grid {
   margin: auto;
 }
 
+/* Action buttons konténer */
 #action-buttons {
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  flex-direction: row; /* Horizontal layout */
+  align-items: center; /* Vertically center the buttons */
+  justify-content: space-between; /* Distribute space between buttons */
+  width: 100%; /* Full width of the sidebar */
   margin-top: 10px;
   margin-bottom: 20px;
 }
@@ -83,10 +79,174 @@
 
 #openbtn {
   z-index: 100;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+  position: fixed;
+  left: 10px;
+  top: 10px;
+}
+
+#openbtn.hidden {
+  opacity: 0;
+  pointer-events: none; /* Ne legyen kattintható, amikor rejtve van */
 }
 
 .stair {
   width: 2em;
 
   height: 2em;
+}
+
+/* Dynamic Island */
+.dynamic-island {
+  position: fixed; /* Fix pozíció a viewport-hoz képest */
+  top: 10px; /* Távolság a képernyő tetejétől */
+  left: 50%; /* Középre igazítás */
+  transform: translateX(-50%); /* Eltolás a saját szélességének felével balra */
+  margin: 0; /* Eltávolítjuk az eredeti margót */
+  z-index: 200; /* Biztosítjuk, hogy a sidebar felett legyen */
+}
+
+.dynamic-island .pill {
+  margin: 2.5px auto;
+  background: rgba(25, 25, 25, 0.5);
+  box-shadow: var(--box-shadow);
+  backdrop-filter: var(--blur-effect);
+  -webkit-backdrop-filter: var(--blur-effect);
+  border: 1px solid var(--border-color);
+  width: 90px;
+  height: 30px;
+  border-radius: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 700ms cubic-bezier(0.32, 0.7, 0.22, 1.2);
+}
+
+.dynamic-island .pill .floor-text {
+  color: #fff;
+  font-size: 14px;
+  opacity: 1;
+  transition: opacity 700ms cubic-bezier(0.32, 0.7, 0.22, 1.2);
+  font-family: "Poppins", sans-serif;
+}
+
+.dynamic-island.active .pill {
+  width: 353px;
+  height: 57.5px;
+}
+
+.dynamic-island.active .pill .floor-text {
+  opacity: 0;
+}
+
+/* A konténer alapstílusa */
+.dynamic-island .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #fff;
+  opacity: 0;
+  filter: blur(10px);
+  width: 346px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.2);
+  pointer-events: none;
+  transition: all 700ms cubic-bezier(0.32, 0.7, 0.22, 1.2);
+}
+
+/* Active állapot */
+.dynamic-island .container.active {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Gomb alapállapotban (láthatatlan) */
+.dynamic-island .container .right {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 700ms cubic-bezier(0.32, 0.7, 0.22, 1.2);
+}
+
+/* Összecsukás gomb */
+.dynamic-island .collapse-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
+  border-radius: 50%; /* Ensures circular shape */
+  width: 30px; /* Fixed width */
+  height: 30px; /* Fixed height, matching width for circle */
+  min-width: 30px; /* Prevents shrinking */
+  min-height: 30px; /* Prevents shrinking */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 12px; /* Consistent icon size */
+  transition: var(--transition);
+  margin-right: 5px;
+  padding: 0; /* Remove padding to avoid distortion */
+  box-sizing: border-box; /* Include border in dimensions */
+}
+
+/* Hover effekt a gombra */
+.dynamic-island .collapse-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--accent-color);
+}
+
+/* Ensure the icon inside is centered and fits */
+.dynamic-island .collapse-button i {
+  font-size: 12px; /* Match the button’s font-size */
+  line-height: 1; /* Prevent vertical stretching */
+}
+
+/* Gomb láthatósága active módban */
+.dynamic-island.active .container.active .right {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* A szöveg elrendezése */
+.dynamic-island .description {
+  display: flex;
+  flex-direction: column; /* Függőleges elrendezés */
+  gap: 2px; /* Kis távolság az emelet és az útvonal között */
+}
+
+/* Bal oldali rész (kép és szöveg) */
+.dynamic-island .left {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Kicsit csökkentettük a távolságot a kép és a szöveg között */
+}
+
+.dynamic-island .photo {
+  height: 50px;
+}
+
+.dynamic-island .photo img {
+  height: 100%;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+/* Útvonal szövege */
+.dynamic-island .name.route {
+  color: rgb(52, 179, 252);
+  font-size: 14px; /* Kicsit kisebb betűméret, hogy elférjen */
+  font-family: "Poppins", sans-serif;
+  white-space: nowrap; /* Biztosítjuk, hogy ne törjön sorba */
+}
+
+/* Emelet szövege */
+.dynamic-island .device {
+  opacity: 40%;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  white-space: nowrap; /* Biztosítjuk, hogy ne törjön sorba */
 }
