@@ -2,29 +2,37 @@
   .left-panel,
   #qrcode-container,
   .bottom-elements {
-    display: none;
+    display: none; /* Alapértelmezett elrejtés landscape nézetben */
   }
-  .grid {
-    top: 0%;
-
-    grid-template-columns: repeat(20, calc(3em * 0.8));
-    zoom: 0.6;
+  #openbtn {
+    display: block; /* Biztosítjuk, hogy az openbtn látható legyen */
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    z-index: 100;
+  }
+  .current-floor-display {
+    font-size: 1rem;
   }
   .grid div {
     min-width: 3em;
     min-height: 3em;
     font-size: 0.8rem;
   }
-  .grid {
-    left: 10%;
-  }
-  .current-floor-display {
-    font-size: 1rem;
-  }
-
   .left-panel.active {
-    height: 80dvh !important;
+    display: block; /* Az active sidebar látható legyen */
+    position: fixed;
+    left: 10px; /* A sidebar pozíciója landscape nézetben */
+    width: 275px;
+    height: 80dvh;
     scale: 0.8;
+    transform-origin: top left; /* A skálázás kiindulópontja */
+  }
+  .grid {
+    top: 0%;
+    grid-template-columns: repeat(20, calc(3em * 0.8));
+    zoom: 0.6;
+    left: 10%;
   }
   #arrow-container {
     left: 0%;
@@ -35,8 +43,10 @@
 @media screen and (orientation: portrait) and (max-width: 768px) {
   .grid,
   .current-floor-display,
-  #arrow-container {
-    display: none !important;
+  #arrow-container,
+  .left-panel,
+  #openbtn {
+    display: none !important; /* Minden elrejtése portrait nézetben */
   }
   #orientationOverlay {
     display: flex;

@@ -19,11 +19,14 @@
   z-index: 100;
 }
 #arrows span {
-  background-color: rgba(44, 44, 44, 0.89);
   padding: 15px;
-  border-radius: 5px;
   cursor: pointer;
-  border: 1px solid rgb(68, 68, 68);
+  background: rgba(25, 25, 25, 0.5);
+  border-radius: 12.5px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(7.4px);
+  -webkit-backdrop-filter: blur(7.4px);
+  border: 1px solid rgba(45, 45, 45, 0.75);
 }
 #working-area {
   z-index: 10;
@@ -65,15 +68,20 @@
 }
 
 .blink {
-  animation: blinker 1s linear infinite;
+  animation: blinker 1s infinite;
 }
 
 @keyframes blinker {
+  0% {
+    background: rgba(45, 45, 45, 0.5);
+    border: 1px solid rgba(45, 45, 45, 0.75);
+  }
   50% {
-    background-color: rgb(52, 179, 252);
+    background: rgba(255, 215, 0, 0.5);
+    border: 1px solid rgba(255, 225, 35, 0.5);
   }
   100% {
-    background-color: rgba(53, 52, 52, 0.89);
+    background: rgba(45, 45, 45, 0.5);
   }
 }
 

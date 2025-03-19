@@ -729,7 +729,31 @@ document.addEventListener("DOMContentLoaded", function () {
     sidebar.classList.remove("active");
     openbtn.style.display = "block"; // Ha a sidebar zárva van, az openbtn látható
   }
+
+  // Orientáció változásának kezelése
+  handleOrientationChange();
 });
+
+// Orientáció változásának dinamikus kezelése
+function handleOrientationChange() {
+  const sidebar = document.getElementById("sidenav");
+  const openbtn = document.getElementById("openbtn");
+
+  const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+  const isPortrait = window.matchMedia("(orientation: portrait) and (max-width: 768px)").matches;
+
+  if (isPortrait) {
+    sidebar.classList.remove("active"); // Portrait nézetben a sidebar mindig zárva
+    openbtn.style.display = "none"; // Openbtn rejtve portrait nézetben
+    localStorage.setItem("sidebar", "inactive");
+  } else if (isLandscape) {
+    if (sidebar.classList.contains("active")) {
+      openbtn.style.display = "none"; // Ha a sidebar nyitva, openbtn rejtve
+    } else {
+      openbtn.style.display = "block"; // Ha a sidebar zárva, openbtn látható
+    }
+  }
+}
 
 
 setupDesktop();
@@ -1219,6 +1243,10 @@ function toggleSidebar() {
   const sidebar = document.getElementById("sidenav");
   const openbtn = document.getElementById("openbtn");
 
+  // Csak akkor toggoljuk, ha nem portrait nézetben vagyunk
+  const isPortrait = window.matchMedia("(orientation: portrait) and (max-width: 768px)").matches;
+  if (isPortrait) return; // Portrait nézetben ne történjen semmi
+
   sidebar.classList.toggle("active");
 
   if (sidebar.classList.contains("active")) {
@@ -1229,6 +1257,10 @@ function toggleSidebar() {
     localStorage.setItem("sidebar", "inactive");
   }
 }
+
+// Orientáció változásának figyelése
+window.addEventListener("orientationchange", handleOrientationChange);
+window.addEventListener("resize", handleOrientationChange); // Biztonság kedvéért resize is
 
 //Dynamic Island
 const dynamicIslandPill = document.querySelector(".dynamic-island .pill");
