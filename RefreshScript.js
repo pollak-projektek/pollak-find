@@ -106,7 +106,7 @@ const floors = {
     "cell-3-18": "X",
     "cell-3-19": "X",
 
-    "cell-4-0": "Elektr",
+    "cell-4-0": "Elektro",
     "cell-4-1": "X",
     "cell-4-2": "",
     "cell-4-3": "X",
