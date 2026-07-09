@@ -8,7 +8,7 @@ import QuickSearch from './components/QuickSearch';
 import RoomPopup from './components/RoomPopup';
 import { multiFloorAStar, findAllNodesByName } from './utils/pathfinding';
 import { addSearchHistory } from './utils/favorites';
-import { Menu, ArrowUp, ArrowDown, MapPin, Box, Edit3, Layers, Search, Share2 } from 'lucide-react';
+import { Menu, ArrowUp, ArrowDown, MapPin, Box, Edit3, Layers, Search, Share2, X } from 'lucide-react';
 import initialMapData from './data/mapData.json';
 import './index.css';
 
@@ -313,27 +313,46 @@ function App() {
   return (
     <div className="app-container">
       {/* Mobile Quick Search Bar */}
-      {isMobile && !isEditor && (
-        <button 
-          className="mobile-search-bar glass-panel"
-          onClick={() => { haptic(5); setQuickSearchOpen(true); }}
-        >
-          <Search size={18} className="text-accent" />
-          <span className="mobile-search-text">
-            {startRoom && endRoom 
-              ? `${startRoom} → ${endRoom}` 
-              : 'Hova mész? Keress termet...'}
-          </span>
-        </button>
+      {isMobile && !isEditor && !sidebarOpen && (
+        <div className="mobile-search-bar glass-panel">
+          <div 
+            className="mobile-search-content"
+            onClick={() => { haptic(5); setQuickSearchOpen(true); }}
+            style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, overflow: 'hidden', cursor: 'pointer' }}
+          >
+            <Search size={18} className="text-accent" />
+            <span className="mobile-search-text">
+              {startRoom && endRoom 
+                ? `${startRoom} → ${endRoom}` 
+                : 'Hova mész? Keress termet...'}
+            </span>
+          </div>
+          {(startRoom || endRoom) && (
+            <button 
+              className="mobile-search-clear"
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                haptic(5); 
+                handleReset(); 
+              }}
+              style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', padding: '4px', display: 'flex', cursor: 'pointer', zIndex: 30 }}
+            >
+              <X size={18} />
+            </button>
+          )}
+        </div>
       )}
 
       {/* Desktop menu toggle */}
-      <button 
-        className="glass-panel mobile-toggle" 
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-      >
-        <Menu />
-      </button>
+      {!isMobile && (
+        <button 
+          className="glass-panel mobile-toggle" 
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          style={{ zIndex: 45 }}
+        >
+          {sidebarOpen ? <X /> : <Menu />}
+        </button>
+      )}
 
       <Sidebar 
         startRoom={startRoom} 
@@ -390,7 +409,7 @@ function App() {
           >
             <TransformComponent 
               wrapperStyle={{ width: '100%', height: '100%' }} 
-              contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              contentStyle={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', willChange: 'transform' }}
             >
               <MapGrid 
                 currentFloor={currentFloor} 
