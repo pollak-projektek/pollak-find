@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(distPath));
   
   // Minden más kérésre a React alkalmazás index.html-jét adjuk vissza (SPA routing miatt)
-  app.get('*', (req, res) => {
+  app.get(/^(.*)$/, (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
   });
 }
