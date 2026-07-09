@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Favicon / Tab részleg -->
+    <link rel="shortcut icon" href="./Logo.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Stíluslap -->
+    <link rel="stylesheet" href="RefreshStyle.css" />
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="responsive.css" />
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css"
+    />
+
+    <!-- JS script -->
+    <script src="RefreshScript.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="jquery.ui.touch-punch.min.js"></script>
+    <title>PollakFind • Teremkereső</title>
+  </head>
+  <body>
+    <div id="arrow-container">
+      <div id="arrows">
+        <span id="upArrow" class="arrow"> <i class="fas fa-arrow-up"></i></span>
+        <span id="downArrow" class="arrow"
+          ><i class="fas fa-arrow-down"></i
+        ></span>
+      </div>
+    </div>
+    <div id="container">
+      <button id="openbtn" onclick="toggleSidebar()">&#9776;</button>
+      <div class="left-panel" id="sidenav">
+        <div class="logo-container">
+          <img src="./Logo.png" alt="Logo" />
+          <h1>PollakFind</h1>
+          <button class="closebtn" onclick="toggleSidebar()">&#10094;</button>
+        </div>
+        <div class="select-container">
+          <!-- Indulási hely -->
+          <label class="searchable-select-label" for="start">Kezdőpont: </label>
+          <div class="searchable-select">
+            <input
+              class="searchable-select-input"
+              type="text"
+              id="start"
+              placeholder="Keresés..."
+              list="startOptions"
+            />
+            <datalist id="startOptions">
+              <option value="Chill">Chill Zóna</option>
+              <option value="Büfé">Büfé</option>
+              <option value="FőBej">FőBejárat</option>
+              <option value="Mat1">Matek I. terem</option>
+              <option value="Mat2">Matek II. terem</option>
+              <option value="Mat3">Matek III. terem</option>
+              <option value="CadC">CadCam terem</option>
+              <option value="HBej">Hátsó bejárat</option>
+              <option value="Nwc">Női mosdó-Földszint</option>
+              <option value="Nwc2">Női mosdó-II.emelet</option>
+              <option value="FwcT">Férfi mosdó-Földszint Tesi teremnél</option>
+              <option value="Fwc0">
+                Férfi mosdó-Földszint főbejárat mellett
+              </option>
+              <option value="Fwc1">Férfi mosdó-I.emelet</option>
+              <option value="Fwc2">Férfi mosdó-II.emelet</option>
+              <option value="FérfiÖ">Férfi öltöző</option>
+              <option value="NőiÖ">Női öltöző</option>
+              <option value="Gaz.ir">Gazdasági iroda</option>
+              <option value="Igazg.">Igazgatói iroda</option>
+              <option value="Titk">Titkárság</option>
+              <option value="Tanári">Tanári</option>
+              <option value="Szert.">Szertár</option>
+              <option value="Info I">Infó I-es terem</option>
+              <option value="Info II">Infó II-es terem</option>
+              <option value="Info III">Infó III-as terem</option>
+              <option value="Info IV">Infó IV-es terem</option>
+              <option value="Info V">Infó V-ös terem</option>
+              <option value="Info VI">Infó VI-os terem</option>
+              <option value="Info VII">Infó VII-es terem</option>
+              <option value="V. Tant.">V.tanterem</option>
+              <option value="VI. Tant.">VI.tanterem</option>
+              <option value="VII. Tant.">VII.tanterem</option>
+              <option value="VIII. Tant.">VIII.tanterem</option>
+              <option value="I. Tant.">I.tanterem</option>
+              <option value="IX. Tant.">IX.tanterem</option>
+              <option value="X. Tant.">X.tanterem</option>
+              <option value="Kajtor">Kajtor tanterem</option>
+              <option value="Nylabor">Nyelvi labor</option>
+              <option value="Torna T.">Tornaterem</option>
+              <option value="PLC">PLC terem</option>
+              <option value="DKA">DKA terem</option>
+              <option value="KNX">KNX terem</option>
+              <option value="Elektr">Elektronika terem</option>
+              <option value="IpElek">Ipari Elektronikai terem</option>
+              <option value="Mech">Mech terem</option>
+              <option value="HAjtó">Hátsó Ajtó</option>
+              <option value="UAjtó">Udvari Ajtó</option>
+            </datalist>
+          </div>
+          <!-- Cél -->
+          <label class="searchable-select-label" for="end">Cél: </label>
+          <div class="searchable-select">
+            <input
+              class="searchable-select-input"
+              type="text"
+              id="end"
+              placeholder="Keresés..."
+              list="endOptions"
+            />
+            <datalist id="endOptions">
+              <option value="Chill">Chill Zóna</option>
+              <option value="Büfé">Büfé</option>
+              <option value="FőBej">FőBejárat</option>
+              <option value="Mat1">Matek I. terem</option>
+              <option value="Mat2">Matek II. terem</option>
+              <option value="Mat3">Matek III. terem</option>
+              <option value="CadC">CadCam terem</option>
+              <option value="HBej">Hátsó bejárat</option>
+              <option value="Nwc">Női mosdó-Földszint</option>
+              <option value="Nwc2">Női mosdó-II.emelet</option>
+              <option value="FwcT">Férfi mosdó-Földszint Tesi teremnél</option>
+              <option value="Fwc0">
+                Férfi mosdó-Földszint főbejárat mellett
+              </option>
+              <option value="Fwc1">Férfi mosdó-I.emelet</option>
+              <option value="Fwc2">Férfi mosdó-II.emelet</option>
+              <option value="FérfiÖ">Férfi öltöző</option>
+              <option value="NőiÖ">Női öltöző</option>
+              <option value="Gaz.ir">Gazdasági iroda</option>
+              <option value="Igazg.">Igazgatói iroda</option>
+              <option value="Titk">Titkárság</option>
+              <option value="Tanári">Tanári</option>
+              <option value="Szert.">Szertár</option>
+              <option value="Info I">Infó I-es terem</option>
+              <option value="Info II">Infó II-es terem</option>
+              <option value="Info III">Infó III-as terem</option>
+              <option value="Info IV">Infó IV-es terem</option>
+              <option value="Info V">Infó V-ös terem</option>
+              <option value="Info VI">Infó VI-os terem</option>
+              <option value="Info VII">Infó VII-es terem</option>
+              <option value="V. Tant.">V.tanterem</option>
+              <option value="VI. Tant.">VI.tanterem</option>
+              <option value="VII. Tant.">VII.tanterem</option>
+              <option value="VIII. Tant.">VIII.tanterem</option>
+              <option value="I. Tant.">I.tanterem</option>
+              <option value="IX. Tant.">IX.tanterem</option>
+              <option value="X. Tant.">X.tanterem</option>
+              <option value="Kajtor">Kajtor tanterem</option>
+              <option value="Nylabor">Nyelvi labor</option>
+              <option value="Torna T.">Tornaterem</option>
+              <option value="PLC">PLC terem</option>
+              <option value="DKA">DKA terem</option>
+              <option value="KNX">KNX terem</option>
+              <option value="Elektr">Elektronika terem</option>
+              <option value="IpElek">Ipari Elektronikai terem</option>
+              <option value="Mech">Mech terem</option>
+              <option value="HAjtó">Hátsó Ajtó</option>
+              <option value="UAjtó">Udvari Ajtó</option>
+            </datalist>
+          </div>
+
+          <div id="action-buttons">
+            <button class="search-button" onclick="runPathfinding()">
+              Tanterem keresése
+            </button>
+            <button class="reset-button" onclick="resetGridPosition()">
+              Visszaállítás
+            </button>
+          </div>
+
+          <div id="qrcode-container">
+            <p id="qr-message">Indítsd el a keresést a generáláshoz</p>
+            <div id="qrcode"></div>
+          </div>
+
+          <div class="bottom-elements">
+            <p class="tuto-message-center">Kövesd a Pollákot!</p>
+            <div
+              class="social-buttons"
+              style="
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <a
+                href="https://www.facebook.com/pmszki/?locale=hu_HU"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                  text-decoration: none;
+                  border: 0;
+                  width: 35px;
+                  height: 35px;
+                  padding: 2px;
+                  margin: 5px;
+                  color: #ffffff;
+                  border-radius: 50%;
+                  background-color: #151515;
+                "
+                ><svg
+                  class="niftybutton-facebook"
+                  style="display: block; fill: currentColor"
+                  data-donate="true"
+                  data-tag="fac"
+                  data-name="Facebook"
+                  viewBox="0 0 512 512"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <title>Facebook social icon</title>
+                  <path
+                    d="M211.9 197.4h-36.7v59.9h36.7V433.1h70.5V256.5h49.2l5.2-59.1h-54.4c0 0 0-22.1 0-33.7 0-13.9 2.8-19.5 16.3-19.5 10.9 0 38.2 0 38.2 0V82.9c0 0-40.2 0-48.8 0 -52.5 0-76.1 23.1-76.1 67.3C211.9 188.8 211.9 197.4 211.9 197.4z"
+                  ></path></svg></a
+              ><a
+                href="https://www.tiktok.com/@pollaktechnikum"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                  text-decoration: none;
+                  border: 0;
+                  width: 35px;
+                  height: 35px;
+                  padding: 2px;
+                  margin: 5px;
+                  color: #ffffff;
+                  border-radius: 50%;
+                  background-color: #151515;
+                "
+                ><svg
+                  class="niftybutton-tiktok"
+                  style="display: block; fill: currentColor"
+                  data-donate="true"
+                  data-tag="tic"
+                  data-name="TikTok"
+                  viewBox="0 0 512 512"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <title>TikTok social icon</title>
+                  <path
+                    d="M 386.160156 141.550781 C 383.457031 140.15625 380.832031 138.625 378.285156 136.964844 C 370.878906 132.070312 364.085938 126.300781 358.058594 119.785156 C 342.976562 102.523438 337.339844 85.015625 335.265625 72.757812 L 335.351562 72.757812 C 333.617188 62.582031 334.332031 56 334.441406 56 L 265.742188 56 L 265.742188 321.648438 C 265.742188 325.214844 265.742188 328.742188 265.589844 332.226562 C 265.589844 332.660156 265.550781 333.058594 265.523438 333.523438 C 265.523438 333.714844 265.523438 333.917969 265.484375 334.117188 C 265.484375 334.167969 265.484375 334.214844 265.484375 334.265625 C 264.011719 353.621094 253.011719 370.976562 236.132812 380.566406 C 227.472656 385.496094 217.675781 388.078125 207.707031 388.066406 C 175.699219 388.066406 149.757812 361.964844 149.757812 329.734375 C 149.757812 297.5 175.699219 271.398438 207.707031 271.398438 C 213.765625 271.394531 219.789062 272.347656 225.550781 274.226562 L 225.632812 204.273438 C 190.277344 199.707031 154.621094 210.136719 127.300781 233.042969 C 115.457031 243.328125 105.503906 255.605469 97.882812 269.316406 C 94.984375 274.316406 84.042969 294.410156 82.714844 327.015625 C 81.882812 345.523438 87.441406 364.699219 90.089844 372.625 L 90.089844 372.792969 C 91.757812 377.457031 98.214844 393.382812 108.742188 406.808594 C 117.230469 417.578125 127.253906 427.035156 138.5 434.882812 L 138.5 434.714844 L 138.667969 434.882812 C 171.925781 457.484375 208.800781 456 208.800781 456 C 215.183594 455.742188 236.566406 456 260.851562 444.492188 C 287.785156 431.734375 303.117188 412.726562 303.117188 412.726562 C 312.914062 401.367188 320.703125 388.425781 326.148438 374.449219 C 332.367188 358.109375 334.441406 338.507812 334.441406 330.675781 L 334.441406 189.742188 C 335.273438 190.242188 346.375 197.582031 346.375 197.582031 C 346.375 197.582031 362.367188 207.832031 387.316406 214.507812 C 405.214844 219.257812 429.332031 220.257812 429.332031 220.257812 L 429.332031 152.058594 C 420.882812 152.976562 403.726562 150.308594 386.160156 141.550781 Z M 386.160156 141.550781"
+                  ></path></svg></a
+              ><a
+                href="https://www.instagram.com/pollak.technikum/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                  text-decoration: none;
+                  border: 0;
+                  width: 35px;
+                  height: 35px;
+                  padding: 2px;
+                  margin: 5px;
+                  color: #ffffff;
+                  border-radius: 50%;
+                  background-color: #151515;
+                "
+                ><svg
+                  class="niftybutton-instagram"
+                  style="display: block; fill: currentColor"
+                  data-donate="true"
+                  data-tag="ins"
+                  data-name="Instagram"
+                  viewBox="0 0 512 512"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <title>Instagram social icon</title>
+                  <path
+                    d="M256 109.3c47.8 0 53.4 0.2 72.3 1 17.4 0.8 26.9 3.7 33.2 6.2 8.4 3.2 14.3 7.1 20.6 13.4 6.3 6.3 10.1 12.2 13.4 20.6 2.5 6.3 5.4 15.8 6.2 33.2 0.9 18.9 1 24.5 1 72.3s-0.2 53.4-1 72.3c-0.8 17.4-3.7 26.9-6.2 33.2 -3.2 8.4-7.1 14.3-13.4 20.6 -6.3 6.3-12.2 10.1-20.6 13.4 -6.3 2.5-15.8 5.4-33.2 6.2 -18.9 0.9-24.5 1-72.3 1s-53.4-0.2-72.3-1c-17.4-0.8-26.9-3.7-33.2-6.2 -8.4-3.2-14.3-7.1-20.6-13.4 -6.3-6.3-10.1-12.2-13.4-20.6 -2.5-6.3-5.4-15.8-6.2-33.2 -0.9-18.9-1-24.5-1-72.3s0.2-53.4 1-72.3c0.8-17.4 3.7-26.9 6.2-33.2 3.2-8.4 7.1-14.3 13.4-20.6 6.3-6.3 12.2-10.1 20.6-13.4 6.3-2.5 15.8-5.4 33.2-6.2C202.6 109.5 208.2 109.3 256 109.3M256 77.1c-48.6 0-54.7 0.2-73.8 1.1 -19 0.9-32.1 3.9-43.4 8.3 -11.8 4.6-21.7 10.7-31.7 20.6 -9.9 9.9-16.1 19.9-20.6 31.7 -4.4 11.4-7.4 24.4-8.3 43.4 -0.9 19.1-1.1 25.2-1.1 73.8 0 48.6 0.2 54.7 1.1 73.8 0.9 19 3.9 32.1 8.3 43.4 4.6 11.8 10.7 21.7 20.6 31.7 9.9 9.9 19.9 16.1 31.7 20.6 11.4 4.4 24.4 7.4 43.4 8.3 19.1 0.9 25.2 1.1 73.8 1.1s54.7-0.2 73.8-1.1c19-0.9 32.1-3.9 43.4-8.3 11.8-4.6 21.7-10.7 31.7-20.6 9.9-9.9 16.1-19.9 20.6-31.7 4.4-11.4 7.4-24.4 8.3-43.4 0.9-19.1 1.1-25.2 1.1-73.8s-0.2-54.7-1.1-73.8c-0.9-19-3.9-32.1-8.3-43.4 -4.6-11.8-10.7-21.7-20.6-31.7 -9.9-9.9-19.9-16.1-31.7-20.6 -11.4-4.4-24.4-7.4-43.4-8.3C310.7 77.3 304.6 77.1 256 77.1L256 77.1z"
+                  ></path>
+                  <path
+                    d="M256 164.1c-50.7 0-91.9 41.1-91.9 91.9s41.1 91.9 91.9 91.9 91.9-41.1 91.9-91.9S306.7 164.1 256 164.1zM256 315.6c-32.9 0-59.6-26.7-59.6-59.6s26.7-59.6 59.6-59.6 59.6 26.7 59.6 59.6S288.9 315.6 256 315.6z"
+                  ></path>
+                  <circle cx="351.5" cy="160.5" r="21.5"></circle></svg></a
+              ><a
+                href="https://www.youtube.com/@pollaktv3186"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="
+                  text-decoration: none;
+                  border: 0;
+                  width: 35px;
+                  height: 35px;
+                  padding: 2px;
+                  margin: 5px;
+                  color: #ffffff;
+                  border-radius: 50%;
+                  background-color: #151515;
+                "
+                ><svg
+                  class="niftybutton-youtube"
+                  style="display: block; fill: currentColor"
+                  data-donate="true"
+                  data-tag="you"
+                  data-name="YouTube"
+                  viewBox="0 0 512 512"
+                  preserveAspectRatio="xMidYMid meet"
+                >
+                  <title>YouTube social icon</title>
+                  <path
+                    d="M422.6 193.6c-5.3-45.3-23.3-51.6-59-54 -50.8-3.5-164.3-3.5-215.1 0 -35.7 2.4-53.7 8.7-59 54 -4 33.6-4 91.1 0 124.8 5.3 45.3 23.3 51.6 59 54 50.9 3.5 164.3 3.5 215.1 0 35.7-2.4 53.7-8.7 59-54C426.6 284.8 426.6 227.3 422.6 193.6zM222.2 303.4v-94.6l90.7 47.3L222.2 303.4z"
+                  ></path></svg
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emeletváltó gombok a sidebar mellett, középen -->
+
+      <div id="working-area">
+        <div class="current-floor-display">
+          <p id="currentFloor">Földszint</p>
+          <span id="currentFloorText"></span>
+        </div>
+        <div class="grid" id="grid"></div>
+      </div>
+      <div id="orientationOverlay">
+        Fordítsa el készülékét a jobb használatért!
+      </div>
+    </div>
+    <script></script>
+  </body>
+</html>
