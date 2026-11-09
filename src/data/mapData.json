@@ -184,6 +184,9 @@
     },
     "IX. Tant.": {
       "type": "tanterem"
+    },
+    "Nyelvi labor": {
+      "type": "tanterem"
     }
   },
   "floors": {
@@ -421,9 +424,9 @@
       "cell-11-8": "Aula",
       "cell-11-9": "Aula",
       "cell-11-10": "Aula",
-      "cell-11-11": "X",
-      "cell-11-12": "X",
-      "cell-11-13": "X",
+      "cell-11-11": "Nyelvi labor",
+      "cell-11-12": "Nyelvi labor",
+      "cell-11-13": "Nyelvi labor",
       "cell-11-14": "X",
       "cell-11-15": "X",
       "cell-11-16": "X",
@@ -441,9 +444,9 @@
       "cell-12-8": "Aula",
       "cell-12-9": "Aula",
       "cell-12-10": "Aula",
-      "cell-12-11": "X",
-      "cell-12-12": "X",
-      "cell-12-13": "X",
+      "cell-12-11": "Nyelvi labor",
+      "cell-12-12": "Nyelvi labor",
+      "cell-12-13": "Nyelvi labor",
       "cell-12-14": "X",
       "cell-12-15": "X",
       "cell-12-16": "X",
@@ -461,9 +464,9 @@
       "cell-13-8": "Aula",
       "cell-13-9": "Aula",
       "cell-13-10": "Aula",
-      "cell-13-11": "X",
-      "cell-13-12": "X",
-      "cell-13-13": "X",
+      "cell-13-11": "Nyelvi labor",
+      "cell-13-12": "Nyelvi labor",
+      "cell-13-13": "Nyelvi labor",
       "cell-13-14": "X",
       "cell-13-15": "X",
       "cell-13-16": "X",
